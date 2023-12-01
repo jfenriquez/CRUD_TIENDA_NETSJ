@@ -12,9 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Categoria = void 0;
 const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
+const producto_entity_1 = require("./producto.entity");
 let Categoria = class Categoria {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, descripcion: { required: true, type: () => String }, imagen: { required: true, type: () => String }, estado: { required: true, type: () => Boolean }, fecha_creacion: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, descripcion: { required: true, type: () => String }, imagen: { required: true, type: () => String }, estado: { required: true, type: () => Boolean }, fecha_creacion: { required: true, type: () => Date }, productos: { required: true, type: () => [require("./producto.entity").Producto] } };
     }
 };
 exports.Categoria = Categoria;
@@ -42,6 +43,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
 ], Categoria.prototype, "fecha_creacion", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => producto_entity_1.Producto, (productos) => productos),
+    __metadata("design:type", Array)
+], Categoria.prototype, "productos", void 0);
 exports.Categoria = Categoria = __decorate([
     (0, typeorm_1.Entity)()
 ], Categoria);

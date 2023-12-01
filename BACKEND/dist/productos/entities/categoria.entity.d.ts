@@ -1,3 +1,4 @@
+import { Producto } from './producto.entity';
 export declare class Categoria {
     id: number;
     nombre: string;
@@ -5,4 +6,5 @@ export declare class Categoria {
     imagen: string;
     estado: boolean;
     fecha_creacion: Date;
+    productos: Producto[];
 }

@@ -19,6 +19,9 @@ const categorias_service_1 = require("../services/categorias.service");
 const create_categoria_dto_1 = require("../dto/create-categoria.dto");
 const update_categoria_dto_1 = require("../dto/update-categoria.dto");
 const swagger_1 = require("@nestjs/swagger");
+const public_decorator_1 = require("../../auth/decorators/public.decorator");
+const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
+const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const roles_model_1 = require("../../auth/models/roles.model");
 const platform_express_1 = require("@nestjs/platform-express");
@@ -95,6 +98,7 @@ let CategoriasController = class CategoriasController {
 };
 exports.CategoriasController = CategoriasController;
 __decorate([
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)('nuevo'),
     (0, roles_decorator_1.Roles)(roles_model_1.Role.CUSTOMER),
     openapi.ApiResponse({ status: 200, type: [require("../entities/categoria.entity").Categoria] }),
@@ -160,6 +164,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CategoriasController.prototype, "uploadExcel", null);
 exports.CategoriasController = CategoriasController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiTags)('categorias'),
     (0, common_1.Controller)('categorias'),
     __metadata("design:paramtypes", [categorias_service_1.CategoriasService])

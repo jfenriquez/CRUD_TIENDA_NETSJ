@@ -3,10 +3,9 @@ import { CreateCategoriaDto } from '../dto/create-categoria.dto';
 import { UpdateCategoriaDto } from '../dto/update-categoria.dto';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository, ReturnDocument } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as Excel from 'exceljs';
-import { Console } from 'console';
 
 @Injectable()
 export class CategoriasService {

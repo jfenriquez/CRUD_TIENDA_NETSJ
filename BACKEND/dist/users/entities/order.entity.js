@@ -4,7 +4,7 @@ exports.Order = void 0;
 const openapi = require("@nestjs/swagger");
 class Order {
     static _OPENAPI_METADATA_FACTORY() {
-        return { user: { required: true, type: () => require("./user.entity").User }, Producto: { required: true, type: () => [require("../../productos/entities/producto.entity").Producto] } };
+        return { user: { required: true, type: () => require("./user.entity").User } };
     }
 }
 exports.Order = Order;

@@ -18,7 +18,7 @@ let User = class User {
         return `${this.nombre} ${this.apellido}`;
     }
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, apellido: { required: true, type: () => String }, email: { required: true, type: () => String }, password: { required: true, type: () => String }, recovery_token: { required: true, type: () => String }, rol: { required: true, type: () => String } };
+        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, apellido: { required: true, type: () => String }, email: { required: true, type: () => String }, phone: { required: true, type: () => String }, password: { required: true, type: () => String }, recovery_token: { required: true, type: () => String }, rol: { required: true, type: () => String }, createAt: { required: true, type: () => Date } };
     }
 };
 exports.User = User;
@@ -39,6 +39,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, unique: true, nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "phone", void 0);
+__decorate([
     (0, class_transformer_1.Exclude)(),
     (0, typeorm_1.Column)({ type: 'varchar', length: 255 }),
     __metadata("design:type", String)
@@ -57,6 +61,13 @@ __decorate([
     __metadata("design:type", String),
     __metadata("design:paramtypes", [])
 ], User.prototype, "fullName", null);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP',
+    }),
+    __metadata("design:type", Date)
+], User.prototype, "createAt", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

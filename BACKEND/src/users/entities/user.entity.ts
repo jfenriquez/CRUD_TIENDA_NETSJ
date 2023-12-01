@@ -1,5 +1,11 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -14,6 +20,9 @@ export class User {
 
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;
+
+  @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
+  phone: string;
 
   @Exclude()
   @Column({ type: 'varchar', length: 255 })
@@ -30,4 +39,9 @@ export class User {
   get fullName(): string {
     return `${this.nombre} ${this.apellido}`;
   }
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
 }

@@ -8,12 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductosModule = void 0;
 const common_1 = require("@nestjs/common");
-const productos_service_1 = require("./services/productos.service");
 const productos_controller_1 = require("./controller/productos.controller");
 const categorias_controller_1 = require("./controller/categorias.controller");
+const productos_service_1 = require("./services/productos.service");
 const categorias_service_1 = require("./services/categorias.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const categoria_entity_1 = require("./entities/categoria.entity");
+const producto_entity_1 = require("./entities/producto.entity");
+const brand_entity_1 = require("./entities/brand.entity");
 const platform_express_1 = require("@nestjs/platform-express");
 let ProductosModule = class ProductosModule {
 };
@@ -21,7 +23,7 @@ exports.ProductosModule = ProductosModule;
 exports.ProductosModule = ProductosModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([categoria_entity_1.Categoria]),
+            typeorm_1.TypeOrmModule.forFeature([categoria_entity_1.Categoria, producto_entity_1.Producto, brand_entity_1.Brand]),
             platform_express_1.MulterModule.register({
                 dest: './uploads',
             }),
