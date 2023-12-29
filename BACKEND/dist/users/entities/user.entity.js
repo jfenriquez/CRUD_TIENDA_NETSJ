@@ -13,12 +13,13 @@ exports.User = void 0;
 const openapi = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const typeorm_1 = require("typeorm");
+const order_entity_1 = require("./order.entity");
 let User = class User {
     get fullName() {
         return `${this.nombre} ${this.apellido}`;
     }
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, apellido: { required: true, type: () => String }, email: { required: true, type: () => String }, phone: { required: true, type: () => String }, password: { required: true, type: () => String }, recovery_token: { required: true, type: () => String }, rol: { required: true, type: () => String }, createAt: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => Number }, nombre: { required: true, type: () => String }, apellido: { required: true, type: () => String }, email: { required: true, type: () => String }, phone: { required: true, type: () => String }, password: { required: true, type: () => String }, recovery_token: { required: true, type: () => String }, rol: { required: true, type: () => String }, createAt: { required: true, type: () => Date }, orders: { required: true, type: () => [require("./order.entity").Order] } };
     }
 };
 exports.User = User;
@@ -68,6 +69,10 @@ __decorate([
     }),
     __metadata("design:type", Date)
 ], User.prototype, "createAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => order_entity_1.Order, (order) => order.user_id),
+    __metadata("design:type", Array)
+], User.prototype, "orders", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

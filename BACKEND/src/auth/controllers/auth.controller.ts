@@ -12,6 +12,9 @@ import { User } from 'src/users/entities/user.entity';
 import { Request } from 'express';
 
 import { AuthService } from '../services/auth.service';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

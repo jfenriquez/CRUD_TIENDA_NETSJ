@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Order } from './order.entity';
 
 @Entity()
 export class User {
@@ -44,4 +47,7 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
+
+  @OneToMany(() => Order, (order) => order.user_id)
+  orders: Order[];
 }

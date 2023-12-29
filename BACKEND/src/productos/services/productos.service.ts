@@ -5,18 +5,32 @@ import { UpdateProductoDto } from '../dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Producto } from '../entities/producto.entity';
+//import { CategoriasService} from '../../productos/services/categorias.service';
+import { CategoriasService } from './categorias.service';
 
 @Injectable()
 export class ProductosService {
   constructor(
     @InjectRepository(Producto)
     private productoRepository: Repository<Producto>,
+    private categoriasService: CategoriasService,
   ) {}
 
   async create(createProductoDto: CreateProductoDto) {
     try {
       const newProducto =
         await this.productoRepository.create(createProductoDto);
+      if (createProductoDto.categoriaId || createProductoDto.brandId) {
+        ///categoria
+        const categoria = await this.categoriasService.find(
+          createProductoDto.categoriaId,
+        );
+        ///MARCA
+        const marca = await this.categoriasService.find(
+          createProductoDto.brandId,
+        );
+        newProducto.categoria = categoria;
+      }
       return this.productoRepository.save(newProducto);
     } catch (error) {
       console.log(error);

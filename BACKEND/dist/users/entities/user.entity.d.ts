@@ -1,3 +1,4 @@
+import { Order } from './order.entity';
 export declare class User {
     id: number;
     nombre: string;
@@ -9,4 +10,5 @@ export declare class User {
     rol: string;
     get fullName(): string;
     createAt: Date;
+    orders: Order[];
 }

@@ -15,7 +15,7 @@ const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class CreateProductoDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { nombre: { required: true, type: () => String }, descripcion: { required: true, type: () => String }, imagen: { required: true, type: () => String }, precio: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, fechaCreacion: { required: true, type: () => Date }, categoriaId: { required: true, type: () => Number } };
+        return { nombre: { required: true, type: () => String }, descripcion: { required: true, type: () => String }, imagen: { required: true, type: () => String }, precio: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, fechaCreacion: { required: true, type: () => Date }, brandId: { required: true, type: () => Number }, categoriaId: { required: true, type: () => Number } };
     }
 }
 exports.CreateProductoDto = CreateProductoDto;
@@ -50,11 +50,11 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateProductoDto.prototype, "stock", void 0);
 __decorate([
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, swagger_1.ApiProperty)(),
-    __metadata("design:type", Date)
-], CreateProductoDto.prototype, "fechaCreacion", void 0);
+    __metadata("design:type", Number)
+], CreateProductoDto.prototype, "brandId", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),

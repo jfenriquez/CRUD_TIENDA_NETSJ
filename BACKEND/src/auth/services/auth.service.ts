@@ -9,6 +9,7 @@ import * as nodemailer from 'nodemailer';
 
 import config from '../../config';
 import { ConfigType } from '@nestjs/config';
+import { AuthDto } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {

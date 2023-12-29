@@ -115,6 +115,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CategoriasController.prototype, "create", null);
 __decorate([
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
     openapi.ApiResponse({ status: 200, type: [require("../entities/categoria.entity").Categoria] }),
     __metadata("design:type", Function),

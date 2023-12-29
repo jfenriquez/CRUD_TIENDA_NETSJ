@@ -10,8 +10,10 @@ exports.ProductosModule = void 0;
 const common_1 = require("@nestjs/common");
 const productos_controller_1 = require("./controller/productos.controller");
 const categorias_controller_1 = require("./controller/categorias.controller");
+const brands_controller_1 = require("./controller/brands.controller");
 const productos_service_1 = require("./services/productos.service");
 const categorias_service_1 = require("./services/categorias.service");
+const brands_service_1 = require("./services/brands.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const categoria_entity_1 = require("./entities/categoria.entity");
 const producto_entity_1 = require("./entities/producto.entity");
@@ -28,9 +30,9 @@ exports.ProductosModule = ProductosModule = __decorate([
                 dest: './uploads',
             }),
         ],
-        controllers: [productos_controller_1.ProductosController, categorias_controller_1.CategoriasController],
-        providers: [productos_service_1.ProductosService, categorias_service_1.CategoriasService],
-        exports: [productos_service_1.ProductosService, categorias_service_1.CategoriasService],
+        controllers: [productos_controller_1.ProductosController, categorias_controller_1.CategoriasController, brands_controller_1.BrandsController],
+        providers: [productos_service_1.ProductosService, categorias_service_1.CategoriasService, brands_service_1.BrandsService],
+        exports: [productos_service_1.ProductosService, categorias_service_1.CategoriasService, brands_service_1.BrandsService],
     })
 ], ProductosModule);
 //# sourceMappingURL=productos.module.js.map

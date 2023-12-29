@@ -50,6 +50,7 @@ export class CategoriasController {
     return this.categoriasService.create(createCategoriaDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.categoriasService.findAll();

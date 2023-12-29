@@ -26,10 +26,12 @@ export class CreateProductoDto {
   @ApiProperty()
   readonly stock: number;
 
-  @IsDate()
+  readonly fechaCreacion: Date;
+
+  @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  readonly fechaCreacion: Date;
+  readonly brandId: number;
 
   @IsNumber()
   @IsNotEmpty()
