@@ -31,7 +31,7 @@ import { Role } from '../../auth/models/roles.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+//POR ACTIVAR AUTH @UseGuards(JwtAuthGuard, RolesGuard)
 //@UseGuards(ApiKeyGuard)
 @ApiTags('categorias')
 @Controller('categorias')

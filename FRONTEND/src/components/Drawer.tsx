@@ -50,6 +50,9 @@ const Drawer = ({ children }: any) => {
             <li>
               <Link href="/dashboardAdmin/categories">CATEGORIAS </Link>
             </li>
+            <li>
+              <Link href="/dashboardAdmin/order">ORDENES</Link>
+            </li>
           </ul>
         </div>
       </div>
