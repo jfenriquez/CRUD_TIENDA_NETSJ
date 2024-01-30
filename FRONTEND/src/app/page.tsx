@@ -1,85 +1,18 @@
+"use client";
 //import '../../public/sw.js';
 import Header from "@/components/Header";
 import Search from "@/components/Search";
+import { useProduct } from "@/hooks/useProduct";
 import Image from "next/image";
-
-const data = [
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-  {
-    nombre: "string",
-    descripcion: "string",
-    imagen: "string",
-    precio: 10.0,
-    stock: 100,
-    categoriaId: 1,
-  },
-];
+import { useEffect } from "react";
 
 export default function Home() {
+  const { fetchData, data } = useProduct();
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <>
       {/* search */}
@@ -91,10 +24,7 @@ export default function Home() {
           <>
             <div className="card w-96 bg-base-100 shadow-xl m-4" key={index}>
               <figure>
-                <img
-                  src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                  alt="Shoes"
-                />
+                <Image src={item.imagen} alt="Shoes" width={500} height={500} />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">
@@ -107,7 +37,9 @@ export default function Home() {
                   <div className="badge badge-outline">
                     catgory:{item.categoriaId}
                   </div>
-                  <button className="btn btn-outline btn-accent">iconcar</button>
+                  <button className="btn btn-outline btn-accent">
+                    iconcar
+                  </button>
                 </div>
               </div>
             </div>
