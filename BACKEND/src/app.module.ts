@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import config from './config';
 import * as Joi from 'joi';
 //import { MulterModule } from '@nestjs/platform-express/multer';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import * as Joi from 'joi';
       }), ///JOI
     }),
     AuthModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [
