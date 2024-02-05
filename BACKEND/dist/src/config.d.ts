@@ -17,6 +17,11 @@ declare const _default: (() => {
     tasks: string;
     LINK_FRONTEND: string;
     LINK_FRONTEN_RECOVERY: string;
+    cloudinaryConfig: {
+        cloudName: string;
+        apiKey_cloudinary: string;
+        apiSecret: string;
+    };
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
     database: {
         host: string;
@@ -36,5 +41,10 @@ declare const _default: (() => {
     tasks: string;
     LINK_FRONTEND: string;
     LINK_FRONTEN_RECOVERY: string;
+    cloudinaryConfig: {
+        cloudName: string;
+        apiKey_cloudinary: string;
+        apiSecret: string;
+    };
 }>;
 export default _default;

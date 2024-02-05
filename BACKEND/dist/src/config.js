@@ -20,5 +20,10 @@ exports.default = (0, config_1.registerAs)('config', () => ({
     tasks: process.env.TASKS,
     LINK_FRONTEND: process.env.LINK_FRONTEND,
     LINK_FRONTEN_RECOVERY: process.env.LINK_FRONTEND_RECOVERY,
+    cloudinaryConfig: {
+        cloudName: process.env.cloud_name,
+        apiKey_cloudinary: process.env.api_key_cloudinary,
+        apiSecret: process.env.api_secret,
+    },
 }));
 //# sourceMappingURL=config.js.map

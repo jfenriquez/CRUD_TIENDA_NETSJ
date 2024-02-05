@@ -12,21 +12,20 @@ import {
   ColumnResizeMode,
 } from "@tanstack/react-table";
 import { TiPlus } from "react-icons/ti";
-//import data from "../../../data/MOCK_DATA.json";
+import Image from "next/image";
 
 import { useState, useEffect, useReducer, memo, useMemo } from "react";
-import axios from "axios";
 
-import endPoints from "@/services/api";
 import { ProductInterface } from "../../../interfaces/ProductInterface";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { deleteProduct, updateProduct } from "@/services/api/categories";
+
 import FormsProduct from "@/components/forms/FormsProduct";
 import { useProduct } from "@/hooks/useProduct";
-import { Form } from "formik";
-import FormProduct2 from "@/components/forms/FormProduct2";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { RiFileDownloadFill } from "react-icons/ri";
 //const defaultData: ProductInterface = [...data];
 
 const columnHelper = createColumnHelper<ProductInterface>();
@@ -50,7 +49,9 @@ const Product = () => {
     columnHelper.accessor("id", {
       header: () => "id",
       cell: (info) => (
-        <i style={{ width: 10, backgroundColor: "red" }}>{info.getValue()}</i>
+        <i key={info.column.id} style={{ width: 10, backgroundColor: "red" }}>
+          {info.getValue()}
+        </i>
       ),
       footer: (info) => info.column.id,
       size: 1,
@@ -59,7 +60,7 @@ const Product = () => {
 
     columnHelper.accessor((row) => row.nombre, {
       id: "name",
-      cell: (info) => <i>{info.getValue()}</i>,
+      cell: (info) => <i key={info.column.id}>{info.getValue()}</i>,
       header: () => <span>Name</span>,
       footer: (info) => info.column.id,
     }),
@@ -76,6 +77,21 @@ const Product = () => {
     }),
     columnHelper.accessor("imagen", {
       header: () => <span>IMAGEN</span>,
+      cell: (info) => (
+        <Image
+          key={info.column.id}
+          src={
+            info.getValue().startsWith("https://") ||
+            info.getValue().startsWith("http://")
+              ? info.getValue()
+              : "https://res.cloudinary.com/ds1n3ewwk/image/upload/v1706720188/play_store-1706720186222-537153358.jpg.jpg"
+          }
+          alt="imagen"
+          className="w-24 rounded-full"
+          width={50}
+          height={50}
+        />
+      ),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("stock", {
@@ -86,9 +102,8 @@ const Product = () => {
       header: "actions",
       ///btn update and delete
       cell: (info) => (
-        <>
+        <p key={info.column.id}>
           <button
-            key={info.row.original.id}
             className="btn btn-circle btn-error m-1"
             onClick={async () => {
               await deleteProduct(info.row.original.id);
@@ -97,7 +112,6 @@ const Product = () => {
             <MdDeleteForever className="h-6 w-6 " />
           </button>
           <button
-            key={info.row.original.id}
             className="btn btn-circle btn-success m-1"
             onClick={async () => {
               await setModal(true);
@@ -106,7 +120,7 @@ const Product = () => {
           >
             <FaEdit className="h-6 w-6" />
           </button>
-        </>
+        </p>
       ),
 
       footer: (info) => info.column.id,
@@ -136,6 +150,7 @@ const Product = () => {
 
   return (
     <div className="overflow-x-auto ml-10 mr-10">
+      <ToastContainer />
       {loading ? (
         <div className="container flex justify-center">
           <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -152,7 +167,28 @@ const Product = () => {
           >
             <TiPlus className="h-7 w-7" />
           </button>
-
+          {/* iconos paraa cargar y descargar datos*/}
+          {/* ADD PRODUCT */}
+          <button
+            className="btn btn-circle btn-success m-1"
+            onClick={() => {
+              setModal(true);
+              setDataUptate(undefined);
+            }}
+          >
+            <SiMicrosoftexcel />
+            <TiPlus className="h-7 w-7" />
+          </button>
+          {/* ADD PRODUCT */}
+          <button
+            className="btn btn-circle btn-success m-1"
+            onClick={() => {
+              setModal(true);
+              setDataUptate(undefined);
+            }}
+          >
+            <RiFileDownloadFill />
+          </button>
           {/* FORMULARIO PRODUCT */}
           {modal === true ? (
             <div>
@@ -173,11 +209,11 @@ const Product = () => {
             <table className="table">
               {/* head */}
               <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
+                {table.getHeaderGroups().map((headerGroup, index) => (
+                  <tr key={index}>
+                    {headerGroup.headers.map((header, index) => (
                       <th
-                        key={header.id}
+                        key={index}
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {header.isPlaceholder
@@ -194,10 +230,10 @@ const Product = () => {
               </thead>
               <tbody>
                 {/* row 1 */}
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
+                {table.getRowModel().rows.map((row, index) => (
+                  <tr key={index}>
+                    {row.getVisibleCells().map((cell, index) => (
+                      <td key={index}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

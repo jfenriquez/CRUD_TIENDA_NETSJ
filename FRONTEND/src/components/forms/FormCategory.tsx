@@ -1,27 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { CategoryInterface } from "../../interfaces/CategoryInterface";
 import { ToastContainer } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCategory } from "@/hooks/useCategory";
+import axios from "axios";
 
 const FormCategory = ({ data, onChange }: any) => {
   ////USECATEGORY
   const { updateCategories, createCategories, deleteCategories, fetchData } =
     useCategory();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleClick = async () => {
     onChange(false);
+  };
+
+  /////manejador de file
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
   };
 
   const formik = useFormik({
     initialValues: initialValues(data), ///data
     validationSchema: Yup.object(validationSchema()), //validacion
     onSubmit: async (formData) => {
-      data
-        ? await updateCategories(data.id, formData)
-        : await createCategories(formData);
-      handleClick();
+      const imageData = new FormData();
+      console.log("imagedata", imageData);
+      if (selectedFile !== null) {
+        imageData.append("image", selectedFile);
+        console.log("formData______", selectedFile);
+        const uploadResponse = await axios.post(
+          "http://localhost:3001/v1/images/",
+          imageData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        const urlImg = uploadResponse.data.secure_url;
+        const categoryData = { ...formData, imagen: urlImg };
+        data
+          ? await updateCategories(data.id, categoryData)
+          : await createCategories(categoryData);
+        handleClick();
+      } else {
+        data
+          ? await updateCategories(data.id, formData)
+          : await createCategories(formData);
+        handleClick();
+      }
     },
   });
 
@@ -71,14 +100,11 @@ const FormCategory = ({ data, onChange }: any) => {
               />
               <br></br>
               <input
-                type="text"
-                name="imagen"
-                id="imagen"
-                defaultValue={data?.imagen}
-                /* error={formik.errors.title} */
-                onChange={formik.handleChange}
-                placeholder="imagen"
-                className="input input-bordered input-primary w-full max-w-xs m-2"
+                type="file"
+                className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                name="image"
+                id="image"
+                onChange={handleFileChange}
               />
               <br></br>
 
@@ -112,14 +138,17 @@ const FormCategory = ({ data, onChange }: any) => {
 export default FormCategory;
 
 ////initialValues
-const initialValues = (data: any) => {
-  return {
-    nombre: data?.nombre ?? "",
-    descripcion: data?.descripcion ?? "",
-    imagen: data?.imagen ?? "",
-    estado: data?.estado ?? "",
-  };
-};
+async function initialValues(data: any) {
+  if (data) {
+    const { nombre, descripcion, imagen, estado } = data;
+    return {
+      nombre: nombre || "",
+      descripcion: descripcion || "",
+      imagen: imagen || "",
+      estado: estado || "",
+    };
+  }
+}
 const validationSchema = () => {
   return {
     nombre: Yup.string(),

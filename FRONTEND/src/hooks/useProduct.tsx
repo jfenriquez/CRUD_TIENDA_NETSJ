@@ -5,9 +5,10 @@ import {
   deleteP,
   addProduct,
   getAllProduct,
+  addImagen,
 } from "@/services/api/products";
-import { toast } from "react-toastify";
-import { create } from "domain";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const useProduct = () => {
   const [data, setData] = useState([]);
@@ -19,7 +20,7 @@ export const useProduct = () => {
     () => async () => {
       try {
         const response = await getAllProduct();
-        setData(response);
+        return setData(response);
       } catch (error) {
         console.log(error);
       } finally {
@@ -36,29 +37,26 @@ export const useProduct = () => {
       if (!response) {
         toast.warning("ERROR AL ACTUALIZAR PRODUCTO");
       } else {
-        console.log("correcto");
-        toast.success("SE ACTUALIZO EL PRODUCTO CORRECTAMENTE");
+        await toast.success("SE ACTUALIZO EL PRODUCTO CORRECTAMENTE");
       }
-      await fetchData();
-      return response;
     } catch (error) {
       console.log(error);
     }
   };
 
   /////createProduct
+
   const createProduct = async (body: any) => {
     try {
       const res = await addProduct(body);
       await fetchData();
       if (!res) {
-        toast.warning("ERROR AL GUARDAR PRODUCTO");
+        await toast.warning("ERROR AL GUARDAR PRODUCTO");
       } else {
+        await fetchData();
         console.log("correcto");
-        toast.success("SE AGREGO EL PRODUCTO CORRECTAMENTE");
+        await toast.success("SE AGREGO EL PRODUCTO CORRECTAMENTE");
       }
-      await fetchData();
-      return res;
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +67,7 @@ export const useProduct = () => {
     try {
       const res = await deleteP(id);
       await fetchData();
+      await toast.success("SE ELIMINO CORRECTAMENTE");
     } catch (error) {
       console.log(error);
     } finally {

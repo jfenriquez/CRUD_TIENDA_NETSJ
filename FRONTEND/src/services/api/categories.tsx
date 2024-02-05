@@ -48,7 +48,9 @@ const deleteCategory = async (id: number) => {
     const response = await axios.delete(
       endPoints.categories.deleteCategory(id)
     );
-    return response.data;
+    if (response.status === 200) {
+      return getAllCategory();
+    }
   } catch (err) {
     return console.error(err);
   }

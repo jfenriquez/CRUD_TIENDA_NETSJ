@@ -2,16 +2,22 @@ import { ProductInterface } from "@/interfaces/ProductInterface";
 import { useFormik } from "formik";
 import React, { use, useState } from "react";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useProduct } from "@/hooks/useProduct";
+import Image from "next/image";
+import axios from "axios";
 
 const FormsProduct = ({ data, onChange }: any) => {
   const { updateProducts, fetchData, createProduct } = useProduct();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   ////closemodal button
   const handlClick = async () => {
     onChange(false);
+  };
+
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
   };
 
   const formik = useFormik({
@@ -19,14 +25,39 @@ const FormsProduct = ({ data, onChange }: any) => {
     validationSchema: Yup.object(validationSchema()),
 
     onSubmit: async (formData) => {
-      data ? updateProducts(data.id, formData) : createProduct(formData);
-      handlClick();
+      const imageData = new FormData();
+      console.log("imagedata", imageData);
+      if (selectedFile !== null) {
+        imageData.append("image", selectedFile);
+        console.log("formData______", selectedFile);
+        const uploadResponse = await axios.post(
+          "http://localhost:3001/v1/images/",
+          imageData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        const urlImg = uploadResponse.data.secure_url;
+        const productData = { ...formData, imagen: urlImg };
+        data
+          ? await updateProducts(data.id, productData)
+          : await createProduct(productData);
+
+        handlClick();
+      } else {
+        data
+          ? await updateProducts(data.id, formData)
+          : await createProduct(formData);
+
+        handlClick();
+      }
     },
   });
 
   return (
     <>
-      <ToastContainer />
       <dialog id="my_modal_2" className={"modal modal-open"}>
         <div className="modal-box">
           <form method="dialog">
@@ -63,21 +94,20 @@ const FormsProduct = ({ data, onChange }: any) => {
                 name="descripcion"
                 id="descripcion"
                 placeholder="descripcion"
-                /* error={formik.errors.title} */
+                defaultValue={data?.descripcion}
                 onChange={formik.handleChange}
                 className="input input-bordered input-primary w-full max-w-xs m-2"
               />
               <br></br>
+
               <input
-                type="text"
-                name="imagen"
-                id="imagen"
-                defaultValue={data?.imagen}
-                /* error={formik.errors.title} */
-                onChange={formik.handleChange}
-                placeholder="imagen"
-                className="input input-bordered input-primary w-full max-w-xs m-2"
+                type="file"
+                className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                name="image"
+                id="image"
+                onChange={handleFileChange}
               />
+
               <br></br>
 
               <input
@@ -162,7 +192,7 @@ function validationSchema() {
   return {
     nombre: Yup.string(),
     descripcion: Yup.string(),
-    imagen: Yup.string(),
+
     precio: Yup.number(),
     stock: Yup.number(),
     categoriaId: Yup.number(),

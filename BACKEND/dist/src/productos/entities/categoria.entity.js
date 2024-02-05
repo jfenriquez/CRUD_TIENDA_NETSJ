@@ -32,7 +32,7 @@ __decorate([
     __metadata("design:type", String)
 ], Categoria.prototype, "descripcion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 150 }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Categoria.prototype, "imagen", void 0);
 __decorate([

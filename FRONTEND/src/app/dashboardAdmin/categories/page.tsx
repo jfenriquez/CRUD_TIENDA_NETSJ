@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import {
   createColumnHelper,
@@ -16,13 +16,27 @@ import { FaEdit } from "react-icons/fa";
 import { getAllCategory } from "@/services/api/categories";
 import { TiPlus } from "react-icons/ti";
 import FormCategory from "@/components/forms/FormCategory";
+import { useCategory } from "@/hooks/useCategory";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 const Categories = () => {
-  const [data, setData] = useState([]); //data total
+  const {
+    modal,
+    setModal,
+    deleteCategories,
+    updateCategories,
+    createCategories,
+    loading,
+    data,
+    fetchData,
+    setLoading,
+  } = useCategory();
+  //const [data, setData] = useState([]); //data total
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
+
   /////formdatos a actualizar
   const [dataUpdate, setDataUptate] = useState<CategoryInterface>();
 
@@ -42,7 +56,7 @@ const Categories = () => {
     columnHelper.accessor((row) => row.nombre, {
       id: "name",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Name</span>,
+      header: () => <span>id</span>,
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("descripcion", {
@@ -51,7 +65,22 @@ const Categories = () => {
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("imagen", {
-      header: () => <span>Visits</span>,
+      header: () => <span>IMAGE</span>,
+      cell: (info) => (
+        <Image
+          key={info.column.id}
+          src={
+            info.getValue().startsWith("https://") ||
+            info.getValue().startsWith("http://")
+              ? info.getValue()
+              : "https://res.cloudinary.com/ds1n3ewwk/image/upload/v1706720188/play_store-1706720186222-537153358.jpg.jpg"
+          }
+          alt="imagen"
+          className="w-24 rounded-full"
+          width={50}
+          height={50}
+        />
+      ),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("estado", {
@@ -67,39 +96,35 @@ const Categories = () => {
       header: "actions",
       ///btn update and delete
       cell: (info) => (
-        <>
+        <p key={info.column.id}>
           <button
             className="btn btn-circle btn-error m-1"
-            onClick={() => {
-              alert("delete" + info.row.original.id);
+            onClick={async () => {
+              await deleteCategories(info.row.original.id);
             }}
           >
             <MdDeleteForever className="h-6 w-6 " />
           </button>
           <button
             className="btn btn-circle btn-success m-1"
-            onClick={() => {
-              setModal(true);
-              setDataUptate(info.row.original);
+            onClick={async () => {
+              await setModal(true);
+              await setDataUptate(info.row.original);
             }}
           >
             <FaEdit className="h-6 w-6" />
           </button>
-        </>
+        </p>
       ),
 
       footer: (info) => info.column.id,
     }),
   ];
 
-  React.useEffect(() => {
-    (async () => {
-      const response = await getAllCategory();
-      setData(response);
-      setLoading(false);
-    })();
-  }, [loading]);
-
+  ///data
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, modal]);
   /////table
   const table = useReactTable({
     data,
@@ -118,6 +143,7 @@ const Categories = () => {
 
   return (
     <div className="overflow-x-auto ml-10 mr-10">
+      <ToastContainer />
       {loading ? (
         <div className="container flex justify-center">
           <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -154,11 +180,11 @@ const Categories = () => {
             <table className="table">
               {/* head */}
               <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
+                {table.getHeaderGroups().map((headerGroup, index) => (
+                  <tr key={index}>
+                    {headerGroup.headers.map((header, index) => (
                       <th
-                        key={header.id}
+                        key={index}
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {header.isPlaceholder
@@ -175,10 +201,10 @@ const Categories = () => {
               </thead>
               <tbody>
                 {/* row 1 */}
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
+                {table.getRowModel().rows.map((row, index) => (
+                  <tr key={index}>
+                    {row.getVisibleCells().map((cell, index) => (
+                      <td key={index}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

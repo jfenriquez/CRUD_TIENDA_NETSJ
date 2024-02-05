@@ -6,12 +6,20 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProductosService } from '../services/productos.service';
 import { CreateProductoDto } from '../dto/create-producto.dto';
 import { UpdateProductoDto } from '../dto/update-producto.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
+import { v2 as cloudinary } from 'cloudinary';
+import { multerConfig } from '../../../multer.config';
+import * as fs from 'fs';
+import * as path2 from 'path';
+import { create } from 'domain';
 @ApiTags('productos')
 @Controller('productos')
 export class ProductosController {
@@ -19,7 +27,7 @@ export class ProductosController {
 
   @Post()
   @ApiOperation({ summary: 'Crear de productos' })
-  create(@Body() createProductoDto: CreateProductoDto) {
+  async create(@Body() createProductoDto: CreateProductoDto) {
     return this.productosService.create(createProductoDto);
   }
 

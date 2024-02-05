@@ -1,7 +1,11 @@
-import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
+import { ConfigService } from '@nestjs/config';
 export declare class ImagesService {
-    create(createImageDto: CreateImageDto): string;
+    private readonly configService;
+    constructor(configService: ConfigService);
+    create(file: any): Promise<import("cloudinary").UploadApiResponse | {
+        message: string;
+    }>;
     findAll(): string;
     findOne(id: number): string;
     update(id: number, updateImageDto: UpdateImageDto): string;

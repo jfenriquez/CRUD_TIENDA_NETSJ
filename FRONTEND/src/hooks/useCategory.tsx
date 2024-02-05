@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   addCategory,
   deleteCategory,
@@ -14,11 +14,14 @@ export const useCategory = () => {
   const [modal, setModal] = useState(false);
 
   // Utilizamos useMemo para memoizar la función que realiza la solicitud Axios
+  // Utilizamos useMemo para memoizar la función que realiza la solicitud Axios
   const fetchData = useMemo(
     () => async () => {
       try {
         const response = await getAllCategory();
-        setData(response);
+        if (response) {
+          return setData(response);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -28,6 +31,7 @@ export const useCategory = () => {
     []
   );
 
+  ///update
   const updateCategories = async (id: number, body: any) => {
     try {
       const response = await updateCategory(id, body);
@@ -65,12 +69,17 @@ export const useCategory = () => {
   ////delete
   const deleteCategories = async (id: number) => {
     try {
-      const res = await deleteCategory(id);
-      await fetchData();
+      const response = await deleteCategory(id);
+
+      if (!response) {
+        toast.warning("ERROR AL ELIMINAR CATEGORIA");
+      } else {
+        console.log("correcto", response);
+        setData(response);
+        await toast.success("SE ELIMINO CORRECTAMENTE " + id);
+      }
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -79,6 +88,7 @@ export const useCategory = () => {
     modal,
     data,
     loading,
+    setLoading,
     fetchData,
     deleteCategories,
     updateCategories,

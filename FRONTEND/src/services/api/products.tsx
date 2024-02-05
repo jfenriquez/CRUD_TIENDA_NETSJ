@@ -22,6 +22,22 @@ const addProduct = async (body: ProductInterface) => {
   }
 };
 
+/////add imagen
+
+const addImagen = async (formData:any) => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+  try {
+    const response = await axios.post(endPoints.files.addImage, formData, config);
+    return response.data;
+  } catch (err) {
+    return console.error(err);
+  }
+};
+
 /////funcion editar producto
 const updateProduct = async (id: number, body: ProductInterface) => {
   const config = {
@@ -63,4 +79,4 @@ const getAllProduct = async () => {
   }
 };
 
-export { addProduct, deleteP, updateProduct, getAllProduct };
+export { addProduct, deleteP, updateProduct, getAllProduct, addImagen };

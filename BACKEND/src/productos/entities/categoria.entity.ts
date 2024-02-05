@@ -12,7 +12,8 @@ export class Categoria {
   @Column({ type: 'varchar', length: 150 })
   descripcion: string;
 
-  @Column({ type: 'varchar', length: 150 })
+  
+  @Column({ type: 'varchar', length: 250 })
   imagen: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })

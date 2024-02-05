@@ -30,7 +30,7 @@ const endPoints = {
       `${API}/${VERSION}/productos?limit=${limit}&offset=${offset}`,
   },
   files: {
-    addImage: `${API}/${VERSION}/files/upload/`,
+    addImage: `${API}/${VERSION}/images/`,
   },
 };
 export default endPoints;
