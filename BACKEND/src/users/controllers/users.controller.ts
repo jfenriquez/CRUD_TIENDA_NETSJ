@@ -7,10 +7,13 @@ import {
   Param,
   Delete,
   Res,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -21,11 +24,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);

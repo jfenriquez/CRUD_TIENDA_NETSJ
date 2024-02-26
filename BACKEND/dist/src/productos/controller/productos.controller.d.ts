@@ -6,7 +6,7 @@ export declare class ProductosController {
     constructor(productosService: ProductosService);
     create(createProductoDto: CreateProductoDto): Promise<import("../entities/producto.entity").Producto>;
     findAll(): Promise<import("../entities/producto.entity").Producto[]>;
-    findOne(id: string): Promise<import("../entities/producto.entity").Producto>;
+    findOne(searchValue: string): Promise<import("../entities/producto.entity").Producto[]>;
     update(id: string, updateProductoDto: UpdateProductoDto): Promise<import("../entities/producto.entity").Producto>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
+    remove(id: string): Promise<import("@nestjs/common").NotFoundException | import("typeorm").DeleteResult>;
 }

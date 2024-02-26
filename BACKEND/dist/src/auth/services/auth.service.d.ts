@@ -14,9 +14,10 @@ export declare class AuthService {
         access_token: string;
         user: User;
     }>;
-    sendRecovery(email: any): Promise<void>;
+    sendRecovery(email: string): Promise<void>;
     changePassword(token: string, newPassword: string): Promise<{
         message: string;
     }>;
     sendEmail(to: string, subject: string, html: string): Promise<void>;
+    findUserByToken(token: string): Promise<User>;
 }

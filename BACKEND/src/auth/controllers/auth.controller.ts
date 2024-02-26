@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -13,6 +14,8 @@ import { Request } from 'express';
 
 import { AuthService } from '../services/auth.service';
 import { ApiTags } from '@nestjs/swagger';
+import { get } from 'http';
+import { use } from 'passport';
 
 @ApiTags('AUTH')
 @Controller('auth')
@@ -27,7 +30,8 @@ export class AuthController {
   }
 
   @Post('recovery')
-  recuperarPassword(@Param('email') email: string) {
+  recuperarPassword(@Body('email') email: string) {
+    console.log('mailcontroller', email);
     return this.authService.sendRecovery(email);
   }
 
@@ -36,5 +40,14 @@ export class AuthController {
     const newPassword = req.body.newPassword;
     // `token: ${req.body.newPassword}, token: ${token}`;
     return this.authService.changePassword(token, newPassword);
+  }
+
+  /////find user by token
+  @UseGuards(AuthGuard('jwt'))
+  @Post('find')
+  findUserByToken(@Req() req: Request) {
+    const token = req.headers['authorization'];
+    console.log('token', token.split(' ')[1]);
+    return this.authService.findUserByToken(token.split(' ')[1]);
   }
 }

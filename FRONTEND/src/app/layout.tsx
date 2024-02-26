@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-
-
+import { useCart } from "@/hooks/useCart";
+import { AppWrapper } from "@/context/Index";
+import { ProviderAuth } from "@/hooks/useAuth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,8 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <ProviderAuth>
+          <AppWrapper>
+            <Header />
+            {children}
+          </AppWrapper>
+        </ProviderAuth>
         <Footer />
       </body>
     </html>

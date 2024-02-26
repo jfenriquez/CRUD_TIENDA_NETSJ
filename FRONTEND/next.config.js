@@ -18,6 +18,6 @@ module.exports = withPWA(nextConfig);
 
 module.exports = {
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ["res.cloudinary.com", "ui-avatars.com"],
   },
 };

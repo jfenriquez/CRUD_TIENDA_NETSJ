@@ -1,8 +1,15 @@
 import React from "react";
+import { Form, useFormik } from "formik";
 
+import * as Yup from "yup";
+
+import FormUser from "./forms/FormUser";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Register = () => {
   return (
     <div className="hero min-h-screen bg-base-200">
+      <ToastContainer></ToastContainer>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Login now!</h1>
@@ -13,71 +20,7 @@ const Register = () => {
           </p>
         </div>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-slate-700 m-9">
-          <form className="card-body">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Nombre</span>
-              </label>
-              <input
-                type="text"
-                placeholder="nombre"
-                className="input input-bordered"
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">apellido</span>
-              </label>
-              <input
-                type="text"
-                placeholder="apellido"
-                className="input input-bordered"
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                type="email"
-                placeholder="email"
-                className="input input-bordered"
-                required
-              />
-            </div>
-
-            <div className="form-control" >
-              <label className="label">
-                <span className="label-text">celular</span>
-              </label>
-              <input
-                type="text"
-                placeholder="celular"
-                className="input input-bordered"
-                required
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Password</span>
-              </label>
-              <input
-                type="password"
-                placeholder="password"
-                className="input input-bordered"
-                required
-              />
-            </div>
-
-            <div className="form-control mt-6">
-              <button className="btn btn-primary">Registrar</button>
-            </div>
-          </form>
+          <FormUser></FormUser>
         </div>
       </div>
     </div>

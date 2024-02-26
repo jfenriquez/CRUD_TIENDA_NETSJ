@@ -53,32 +53,38 @@ export class AuthService {
   }
 
   ////////recovery password send token-password
-  async sendRecovery(email) {
-    const user = await this.usersService.finOneByEmail(email); ///email existe
-    if (!user) {
-      console.log('no encontro email');
-      ////si no existe el email manda error
-      throw new UnauthorizedException('email no existe');
+  async sendRecovery(email: string) {
+    try {
+      const user = await this.usersService.finOneByEmail(email); ///email existe
+
+      if (!user) {
+        console.log('no encontro email');
+        ////si no existe el email manda error
+        throw new UnauthorizedException('email no existe');
+      }
+      const payload = { sub: user.id, email: user.email, role: user.rol };
+      const token = this.jwtService.sign(payload, {
+        secret: this.configService.jwtSecret,
+        expiresIn: '15min',
+      });
+      const link = `${this.configService.LINK_FRONTEN_RECOVERY}${token}`;
+      await this.usersService.update(user.id, {
+        recovery_token: token,
+      }); //////ACTUALIZAR TOKEN
+
+      const mail = {
+        //from: 'cobragerc@gmail.com',
+        to: user.email, // list of receivers
+        subject: `RECUPERAR PASSWORD Hello johnn ✔ ${user.email}`, // Subject line
+        html: `<b>INGRESA A ESTE LINK =>${link}</b>`, // html body
+      };
+
+      const rta = await this.sendEmail(mail.to, mail.subject, mail.html);
+      console.log('rta', rta);
+      return rta;
+    } catch (error) {
+      console.log('error', error);
     }
-    const payload = { sub: user.id, email: user.email, role: user.rol };
-    const token = this.jwtService.sign(payload, {
-      secret: this.configService.jwtSecret,
-      expiresIn: '15min',
-    });
-    const link = `${this.configService.LINK_FRONTEN_RECOVERY}${token}`;
-    await this.usersService.update(user.id, {
-      recovery_token: token,
-    }); //////ACTUALIZAR TOKEN
-
-    const mail = {
-      //from: 'cobragerc@gmail.com',
-      to: user.email, // list of receivers
-      subject: `RECUPERAR PASSWORD Hello johnn ✔ ${user.email}`, // Subject line
-      html: `<b>INGRESA A ESTE LINK =>${link}</b>`, // html body
-    };
-
-    const rta = await this.sendEmail(mail.to, mail.subject, mail.html);
-    return rta;
   }
 
   ///////CHANGE PASSWORD
@@ -105,12 +111,31 @@ export class AuthService {
 
   ///////FUNCION PARA ENVIAR EMAILS
   async sendEmail(to: string, subject: string, html: string): Promise<void> {
-    const mailOptions = {
-      from: 'cobragerc@gmail.com',
-      to: to,
-      subject: subject,
-      html: html,
-    };
-    await this.transporter.sendMail(mailOptions);
+    try {
+      const mailOptions = {
+        from: 'cobragerc@gmail.com',
+        to: to,
+        subject: subject,
+        html: html,
+      };
+      const response = await this.transporter.sendMail(mailOptions);
+      return response;
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+
+  ///////find user by token
+  async findUserByToken(token: string) {
+    try {
+      const payload = this.jwtService.decode(token); // Verificar token
+      console.log('payload_____________', payload);
+
+      const user = await this.usersService.findOne(payload.sub); // Buscar usuario
+      return user;
+    } catch (error) {
+      console.error('Error al procesar el token:', error);
+      throw new UnauthorizedException('Token inválido');
+    }
   }
 }

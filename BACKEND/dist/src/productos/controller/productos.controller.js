@@ -29,8 +29,8 @@ let ProductosController = class ProductosController {
     findAll() {
         return this.productosService.findAll();
     }
-    findOne(id) {
-        return this.productosService.findOne(+id);
+    findOne(searchValue) {
+        return this.productosService.findOne(searchValue);
     }
     update(id, updateProductoDto) {
         return this.productosService.update(+id, updateProductoDto);
@@ -57,9 +57,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProductosController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    openapi.ApiResponse({ status: 200, type: require("../entities/producto.entity").Producto }),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(':searchValue'),
+    openapi.ApiResponse({ status: 200, type: [require("../entities/producto.entity").Producto] }),
+    __param(0, (0, common_1.Param)('searchValue')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
@@ -75,7 +75,7 @@ __decorate([
 ], ProductosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    openapi.ApiResponse({ status: 200 }),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

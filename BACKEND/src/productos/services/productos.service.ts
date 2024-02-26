@@ -3,7 +3,7 @@ import { CreateProductoDto } from '../dto/create-producto.dto';
 import { UpdateProductoDto } from '../dto/update-producto.dto';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Producto } from '../entities/producto.entity';
 //import { CategoriasService} from '../../productos/services/categorias.service';
 import { CategoriasService } from './categorias.service';
@@ -45,20 +45,19 @@ export class ProductosService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(searchValue: string) {
     try {
-      const result = await this.productoRepository.findOne({
-        where: {
-          id: id,
-        },
+      const result = await this.productoRepository.find({
+        where: { nombre: Like('%' + `${searchValue}` + '%') },
       });
 
-      if (!result) {
-        throw new NotFoundException(`Error ,${id}`);
+      if (result.length === 0) {
+        throw new NotFoundException(`Error ,`);
       }
+
       return result;
     } catch (error) {
-      console.log(error);
+      throw new NotFoundException(`Error ,`);
     }
   }
 
@@ -87,7 +86,7 @@ export class ProductosService {
         },
       });
       if (!products) {
-        throw new NotFoundException(`Error ,${id}`);
+        return new NotFoundException(`Error ,${id}`);
       }
       return await this.productoRepository.delete(id);
     } catch (error) {

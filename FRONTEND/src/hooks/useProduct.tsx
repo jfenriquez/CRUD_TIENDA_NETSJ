@@ -6,6 +6,7 @@ import {
   addProduct,
   getAllProduct,
   addImagen,
+  getProducts,
 } from "@/services/api/products";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +15,7 @@ export const useProduct = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
-
+  const [dataDebouncer, setDataDebouncer] = useState([]);
   // Utilizamos useMemo para memoizar la función que realiza la solicitud Axios
   const fetchData = useMemo(
     () => async () => {
@@ -29,6 +30,23 @@ export const useProduct = () => {
     },
     []
   );
+
+  // Utilizamos useMemo para memoizar la función que realiza la solicitud Axios
+  const fetchDataXid = async (id: number) => {
+    try {
+      const response = await getProducts(id);
+      if (response) {
+        setDataDebouncer(response);
+        console.log("hay datos", dataDebouncer);
+      } else {
+        console.log("no hay datos");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   ///update
   const updateProducts = async (id: number, body: any) => {
@@ -79,8 +97,10 @@ export const useProduct = () => {
     setModal,
     modal,
     data,
+    setData,
     loading,
     fetchData,
+    dataDebouncer,
     deleteProduct,
     updateProducts,
     createProduct,

@@ -12,4 +12,5 @@ export declare class AuthController {
     changePassword(req: Request, token: string): Promise<{
         message: string;
     }>;
+    findUserByToken(req: Request): Promise<User>;
 }

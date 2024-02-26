@@ -24,14 +24,18 @@ const addProduct = async (body: ProductInterface) => {
 
 /////add imagen
 
-const addImagen = async (formData:any) => {
+const addImagen = async (formData: any) => {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   };
   try {
-    const response = await axios.post(endPoints.files.addImage, formData, config);
+    const response = await axios.post(
+      endPoints.files.addImage,
+      formData,
+      config
+    );
     return response.data;
   } catch (err) {
     return console.error(err);
@@ -79,4 +83,13 @@ const getAllProduct = async () => {
   }
 };
 
-export { addProduct, deleteP, updateProduct, getAllProduct, addImagen };
+const getProducts = async (id: number) => {
+  try {
+    const response = await axios.get(endPoints.products.getProduct(id));
+    return response.data;
+  } catch (err) {
+    return console.error(err);
+  }
+};
+
+export { addProduct, deleteP, updateProduct, getAllProduct, addImagen ,getProducts};

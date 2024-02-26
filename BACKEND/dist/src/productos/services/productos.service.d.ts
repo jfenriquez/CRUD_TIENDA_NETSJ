@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { CreateProductoDto } from '../dto/create-producto.dto';
 import { UpdateProductoDto } from '../dto/update-producto.dto';
 import { Repository } from 'typeorm';
@@ -9,7 +10,7 @@ export declare class ProductosService {
     constructor(productoRepository: Repository<Producto>, categoriasService: CategoriasService);
     create(createProductoDto: CreateProductoDto): Promise<Producto>;
     findAll(): Promise<Producto[]>;
-    findOne(id: number): Promise<Producto>;
+    findOne(searchValue: string): Promise<Producto[]>;
     update(id: number, updateProductoDto: UpdateProductoDto): Promise<Producto>;
-    remove(id: number): Promise<import("typeorm").DeleteResult>;
+    remove(id: number): Promise<NotFoundException | import("typeorm").DeleteResult>;
 }

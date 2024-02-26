@@ -36,9 +36,9 @@ export class ProductosController {
     return this.productosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productosService.findOne(+id);
+  @Get(':searchValue')
+  findOne(@Param('searchValue') searchValue: string) {
+    return this.productosService.findOne(searchValue);
   }
 
   @Patch(':id')

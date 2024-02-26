@@ -4,7 +4,7 @@ import React, { use, useState } from "react";
 import * as Yup from "yup";
 
 import { useProduct } from "@/hooks/useProduct";
-import Image from "next/image";
+import Image from "next/image"; 
 import axios from "axios";
 
 const FormsProduct = ({ data, onChange }: any) => {
@@ -31,7 +31,7 @@ const FormsProduct = ({ data, onChange }: any) => {
         imageData.append("image", selectedFile);
         console.log("formData______", selectedFile);
         const uploadResponse = await axios.post(
-          "http://localhost:3001/v1/images/",
+          `${process.env.NEXT_PUBLIC_API_URL}/v1/images/`,
           imageData,
           {
             headers: {

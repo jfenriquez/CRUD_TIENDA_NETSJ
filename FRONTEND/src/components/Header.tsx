@@ -1,20 +1,45 @@
 // @next/app-component-path
 "use client";
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Theme from "./Theme";
 import Image from "next/image";
 
 import Search from "./Search";
 import Link from "next/link";
 import { PiSignInFill } from "react-icons/pi";
+import ICONO_3D from "./img_3d/ICONO_3D";
+import { useAppContext } from "@/context/Index";
+import { useAuth } from "@/hooks/useAuth";
+import Cookie from "js-cookie";
 
-const Header = () => {
+const Header = (props: any) => {
+  const { total, contadorProduct } = useAppContext();
+  const auth = useAuth();
+
+  const userData = {
+    nombre: auth?.user.nombre,
+    apellido: auth?.user.apellido,
+    email: auth?.user.email,
+    imagen: `https://ui-avatars.com/api/?name=${auth?.user.nombre}&background=random`,
+    phone: auth?.user.phone,
+  };
   const [login, setLogin] = useState(false);
+
+  // Obtener el token de la cookie
+  const authToken = Cookie.get("token");
+
+  useEffect(() => {
+    if (authToken) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+  }, [auth]);
 
   return (
     <div className="navbar bg-base-100 shadow-xl p-4 rounded-xl bg-gradient-to-r from-transparent via-blue-200 to-transparent h-20 w-full">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <ICONO_3D />
       </div>
       {/* THEME */}
 
@@ -39,7 +64,9 @@ const Header = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge badge-sm indicator-item">8</span>
+              <span className="badge badge-sm indicator-item">
+                {contadorProduct}
+              </span>
             </div>
           </div>
           <div
@@ -47,10 +74,14 @@ const Header = () => {
             className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
           >
             <div className="card-body">
-              <span className="font-bold text-lg">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
+              <span className="font-bold text-lg">{contadorProduct} Items</span>
+              <span className="text-info">Subtotal: {total}</span>
               <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+                <Link href="/cart">
+                  <button className="btn btn-primary btn-block">
+                    View cart
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -69,7 +100,7 @@ const Header = () => {
                   width={45}
                   height={45}
                   alt="CSS Navbar component"
-                  src="/autu.png"
+                  src={userData.imagen}
                 />
               </div>
             </div>
@@ -101,7 +132,9 @@ const Header = () => {
               <div className="rounded-t-lg">
                 <PiSignInFill className="w-10 h-auto " />
               </div>
-              <span className="badge badge-sm indicator-item">login-signup</span>
+              <span className="badge badge-sm indicator-item">
+                login-signup
+              </span>
             </div>
 
             <ul

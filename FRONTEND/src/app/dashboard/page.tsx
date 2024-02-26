@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { FaRegEdit } from "react-icons/fa";
+import FormUser from "@/components/forms/FormUser";
 
 const page = () => {
   return (
@@ -32,37 +33,16 @@ const page = () => {
           <p>Celular:155</p>
           <p>Cambiar password</p>
         </div>
-        <div className="mt-6">
-          <h2 className="text-lg font-bold">Biografía</h2>
-          <p className="text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel
-            metus ut orci semper tristique.
-          </p>
-        </div>
-        <div className="mt-6">
-          <h2 className="text-lg font-bold">Redes Sociales</h2>
-          <div className="flex items-center mt-2">
-            <span className="mr-2 text-gray-600">Twitter:</span>
-            <a
-              href="https://twitter.com/usuario"
-              target="_blank"
-              className="text-blue-500"
-            >
-              twitter.com/usuario
-            </a>
-          </div>
-          <div className="flex items-center mt-2">
-            <span className="mr-2 text-gray-600">GitHub:</span>
-            <a
-              href="https://github.com/usuario"
-              target="_blank"
-              className="text-gray-700"
-            >
-              github.com/usuario
-            </a>
-          </div>
-        </div>
       </div>
+
+      <div className="flex flex-col w-full ">
+        <div className="divider divider-primary">Actualizar Datos</div>
+      </div>
+      <center>
+        <div className="flex flex-col w-2/5 ">
+          <FormUser />
+        </div>
+      </center>
     </>
   );
 };
